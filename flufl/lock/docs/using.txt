@@ -69,5 +69,27 @@ Once you have the lock, it's easy to release it.
     >>> lock.is_locked
     False
 
+It is an error to attempt to acquire the lock more than once in the same
+process.
+::
+
+    >>> lock.lock()
+    >>> lock.lock()
+    Traceback (most recent call last):
+    ...
+    AlreadyLockedError: We already had the lock
+
+    >>> lock.unlock()
+
+Lock objects also support the context manager protocol.
+
+    >>> lock.is_locked
+    False
+    >>> with lock:
+    ...     lock.is_locked
+    True
+    >>> lock.is_locked
+    False
+
 
 .. _`open(2)`: http://manpages.ubuntu.com/manpages/dapper/en/man2/open.2.html
