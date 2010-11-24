@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# flufl.enum documentation build configuration file, created by
+# flufl.lock documentation build configuration file, created by
 # sphinx-quickstart on Thu Jan  7 18:41:30 2010.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -37,14 +37,14 @@ source_suffix = '.txt'
 master_doc = 'README'
 
 # General information about the project.
-project = u'flufl.enum'
+project = u'flufl.lock'
 copyright = u'2004-2010, Barry A. Warsaw'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
-from flufl.enum import __version__
+from flufl.lock import __version__
 # The short X.Y version.
 version = __version__
 # The full version, including alpha/beta/rc tags.
@@ -65,7 +65,7 @@ release = __version__
 
 # List of directories, relative to source directory, that shouldn't be searched
 # for source files.
-exclude_trees = ['_build', 'build', 'flufl.enum.egg-info', 'distribute-0.6.10']
+exclude_trees = ['_build', 'build', 'flufl.lock.egg-info', 'distribute-0.6.10']
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 #default_role = None
@@ -159,7 +159,7 @@ html_static_path = ['../../_static']
 #html_file_suffix = ''
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'fluflenumdoc'
+htmlhelp_basename = 'flufllockdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -173,7 +173,7 @@ htmlhelp_basename = 'fluflenumdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('README.txt', 'fluflenum.tex', u'flufl.enum Documentation',
+  ('README.txt', 'flufllock.tex', u'flufl.lock Documentation',
    u'Barry A. Warsaw', 'manual'),
 ]
 

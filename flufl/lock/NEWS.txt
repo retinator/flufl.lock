@@ -1,35 +1,10 @@
 ===================
-NEWS for flufl.enum
+NEWS for flufl.lock
 ===================
 
-3.0.1 (2010-06-07)
-==================
- * Fixed typo which caused the package to break.
-
-
-3.0 (2010-04-24)
+2.0 (201X-XX-XX)
 ================
- * Package renamed to flufl.enum.
-
-
-2.0.2 (2010-01-29)
-==================
- * Fixed some test failures when running under 2to3.
-
-
-2.0.1 (2010-01-08)
-==================
- * Fix the manifest and clarify license.
-
-
-2.0 (2010-01-07)
-================
- * Use Sphinx to build the documentation.
- * Updates to better package Debian/Ubuntu.
- * Use distribute_setup instead of ez_setup.
- * Rename pep-xxxx.txt; this won't be submitted as a PEP.
- * Remove dependencies on nose and setuptools_bzr
- * Support Python 3 via 2to3.
+ * Package renamed to flufl.lock.
 
 
 Earlier

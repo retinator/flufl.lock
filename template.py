@@ -1,6 +1,6 @@
 # Copyright (C) 2004-2010 by Barry A. Warsaw
 #
-# This file is part of flufl.lock
+# This file is part of flufl.lock.
 #
 # flufl.lock is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Lesser General Public License as published by the Free

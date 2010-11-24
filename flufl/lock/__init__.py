@@ -20,6 +20,10 @@ from __future__ import absolute_import, unicode_literals
 
 __metaclass__ = type
 __all__ = [
+    'AlreadyLockedError',
+    'Lock',
+    'LockError',
+    'NotLockedError',
     '__version__',
     ]
 
@@ -28,4 +32,5 @@ __version__ = '2.0'
 
 
 # Public API.
-from ._lockfile import AlreadyLockedError, Lock, LockError, NotLockedError
+from flufl.lock._lockfile import (
+    AlreadyLockedError, Lock, LockError, NotLockedError)
