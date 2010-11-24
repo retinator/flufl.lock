@@ -26,8 +26,11 @@ __all__ = [
 
 
 import os
+import errno
 import atexit
 import doctest
+import logging
+import tempfile
 import unittest
 
 # pylint: disable-msg=F0401
@@ -53,17 +56,42 @@ def stop():
 
 
 
+def make_temporary_lockfile(testobj):
+    """Make a temporary lock file for the tests."""
+    def lockfile_creator():
+        fd, testobj._lockfile = tempfile.mkstemp()
+        os.close(fd)
+        os.remove(testobj._lockfile)
+        return testobj._lockfile
+    return lockfile_creator
+
+
 def setup(testobj):
     """Test setup."""
+    # Initialize logging.
+    logging.basicConfig()
     # Make sure future statements in our doctests match the Python code.  When
     # run with 2to3, the future import gets removed and these names are not
     # defined.
     try:
         testobj.globs['absolute_import'] = absolute_import
         testobj.globs['unicode_literals'] = unicode_literals
+        testobj.globs['temporary_lockfile'] = make_temporary_lockfile(testobj)
     except NameError:
         pass
     testobj.globs['stop'] = stop
+
+
+def teardown(testobj):
+    """Test teardown."""
+    try:
+        os.remove(testobj._lockfile)
+    except OSError as error:
+        if error.errno != errno.ENOENT:
+            raise
+    except AttributeError:
+        # lockfile_creator() was never called.
+        pass
 
 
 
@@ -79,7 +107,7 @@ def additional_tests():
                         resource_filename('flufl.lock', 'docs/%s' % name)))
     kwargs = dict(module_relative=False,
                   optionflags=DOCTEST_FLAGS,
-                  setUp=setup,
+                  setUp=setup, tearDown=teardown,
                   )
     atexit.register(cleanup_resources)
     return unittest.TestSuite((

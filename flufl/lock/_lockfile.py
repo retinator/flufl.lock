@@ -68,7 +68,7 @@ DEFAULT_LOCK_LIFETIME  = datetime.timedelta(seconds=15)
 # Allowable a bit of clock skew.
 CLOCK_SLOP = datetime.timedelta(seconds=10)
 
-log = logging.getLogger('locknix.locks')
+log = logging.getLogger('flufl.locks')
 
 
 
@@ -119,20 +119,13 @@ class Lock:
             ('locked' if self.is_locked else 'unlocked'),
             self._lifetime, os.getpid(), id(self))
 
-    def _get_lifetime(self):
+    @property
+    def lifetime(self):
         return self._lifetime
 
-    def _set_lifetime(self, lifetime):
+    @lifetime.setter
+    def lifetime(self, lifetime):
         self._lifetime = lifetime
-
-    lifetime = property(_get_lifetime, _set_lifetime, doc="""\
-        Set a new lock lifetime.
-
-        This takes affect the next time the file is locked, but does not
-        refresh a locked file.
-
-        :type: datetime.timedelta
-        """)
 
     def refresh(self, lifetime=None, unconditionally=False):
         """Refreshes the lifetime of a locked file.
@@ -190,7 +183,7 @@ class Lock:
                 log.debug('got the lock: %s', self._lockfile)
                 self._touch()
                 break
-            except OSError, error:
+            except OSError as error:
                 # The link failed for some reason, possibly because someone
                 # else already has the lock (i.e. we got an EEXIST), or for
                 # some other bizarre reason.
@@ -256,13 +249,13 @@ class Lock:
         if is_locked:
             try:
                 os.unlink(self._lockfile)
-            except OSError, error:
+            except OSError as error:
                 if error.errno != errno.ENOENT:
                     raise
         # Remove our claim file.
         try:
             os.unlink(self._claimfile)
-        except OSError, error:
+        except OSError as error:
             if error.errno != errno.ENOENT:
                 raise
         log.debug('unlocked: %s', self._lockfile)
@@ -277,7 +270,7 @@ class Lock:
         # Discourage breaking the lock for a while.
         try:
             self._touch()
-        except OSError, error:
+        except OSError as error:
             if error.errno == errno.EPERM:
                 # We can't touch the file because we're not the owner.  I
                 # don't see how we can own the lock if we're not the owner.

@@ -35,13 +35,12 @@ Creating a lock
 ===============
 
 To create a lock, you must first instantiate a ``Lock`` object, specifying the
-file that will be used to synchronize the lock.
+path to a file that will be used to synchronize the lock.  This file should
+not exist.
 ::
 
-    >>> import os
-    >>> from tempfile import mkstemp
-    >>> fd, filename = mkstemp()
-    >>> os.close(fd)
+    # This function comes from the test infrastructure.
+    >>> filename = temporary_lockfile()
 
     >>> from flufl.lock import Lock
     >>> lock = Lock(filename)
@@ -53,6 +52,22 @@ Locks have a default lifetime.
     >>> lock.lifetime
     datetime.timedelta(0, 15)
 
+You can ask whether the lock is acquired or not.
+
+    >>> lock.is_locked
+    False
+
+Acquiring the lock is easy if no other process has already acquired it.
+
+    >>> lock.lock()
+    >>> lock.is_locked
+    True
+
+Once you have the lock, it's easy to release it.
+
+    >>> lock.unlock()
+    >>> lock.is_locked
+    False
+
 
 .. _`open(2)`: http://manpages.ubuntu.com/manpages/dapper/en/man2/open.2.html
-
