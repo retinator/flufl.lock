@@ -92,4 +92,37 @@ Lock objects also support the context manager protocol.
     False
 
 
+Lock acquisition blocks
+=======================
+
+Trying to lock the file when the lock is unavailable (because another process
+has already acquired it), the lock call will block.
+::
+
+    >>> from flufl.lock.tests.subproc import acquire
+    >>> from datetime import timedelta
+    >>> import time
+    >>> t0 = time.time()
+
+    >>> acquire(filename, timedelta(seconds=5))
+    >>> lock.lock()
+    >>> t1 = time.time()
+    >>> lock.unlock()
+
+    >>> t1 - t0 > 4
+    True
+
+
+Refreshing a lock
+=================
+
+A process can *refresh* a lock if it realizes that it needs to hold the lock
+for a little longer.  You cannot refresh an unlocked lock.
+
+    >>> lock.refresh()
+    Traceback (most recent call last):
+    ...
+    NotLockedError: <Lock ...
+
+
 .. _`open(2)`: http://manpages.ubuntu.com/manpages/dapper/en/man2/open.2.html

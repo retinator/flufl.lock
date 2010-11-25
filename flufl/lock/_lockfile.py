@@ -89,7 +89,7 @@ class TimeOutError(LockError):
 
 class Lock:
     """A portable way to lock resources by way of the file system."""
-    def __init__(self, lockfile, lifetime=DEFAULT_LOCK_LIFETIME):
+    def __init__(self, lockfile, lifetime=None):
         """Create the resource lock using the given file name and lifetime.
 
         Each process laying claim to this resource lock will create their own
@@ -100,6 +100,8 @@ class Lock:
         :param lifetime: The expected maximum lifetime of the lock, as a
             timedelta.  Defaults to 15 seconds.
         """
+        if lifetime is None:
+            lifetime = DEFAULT_LOCK_LIFETIME
         self._lockfile = lockfile
         self._lifetime = lifetime
         # Calculate a hard link file name that will be used to lay claim to
