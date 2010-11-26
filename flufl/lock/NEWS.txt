@@ -2,7 +2,7 @@
 NEWS for flufl.lock
 ===================
 
-2.0 (201X-XX-XX)
+2.0 (2010-11-26)
 ================
  * Package renamed to flufl.lock.
 
