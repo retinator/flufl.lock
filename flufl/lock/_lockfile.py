@@ -67,6 +67,12 @@ import datetime
 DEFAULT_LOCK_LIFETIME  = datetime.timedelta(seconds=15)
 # Allowable a bit of clock skew.
 CLOCK_SLOP = datetime.timedelta(seconds=10)
+try:
+    MAXINT = sys.maxint
+except AttributeError:
+    # Python 3.
+    MAXINT = sys.maxsize
+
 
 log = logging.getLogger('flufl.lock')
 
@@ -121,7 +127,7 @@ class Lock:
         # lf1 and do not lock lf2, lf2.locked() will still return True.
         self._claimfile = '%s.%s.%d.%d' % (
             self._lockfile, socket.getfqdn(), os.getpid(),
-            random.randint(0, sys.maxint))
+            random.randint(0, MAXINT))
         # For transferring ownership across a fork.
         self._owned = True
 

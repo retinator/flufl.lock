@@ -81,11 +81,13 @@ It is an error to attempt to acquire the lock more than once in the same
 process.
 ::
 
+    >>> from flufl.lock import AlreadyLockedError
     >>> lock.lock()
-    >>> lock.lock()
-    Traceback (most recent call last):
-    ...
-    AlreadyLockedError: We already had the lock
+    >>> try:
+    ...     lock.lock()
+    ... except AlreadyLockedError as error:
+    ...     print error
+    We already had the lock
 
     >>> lock.unlock()
 
@@ -126,10 +128,12 @@ Refreshing a lock
 A process can *refresh* a lock if it realizes that it needs to hold the lock
 for a little longer.  You cannot refresh an unlocked lock.
 
-    >>> lock.refresh()
-    Traceback (most recent call last):
-    ...
-    NotLockedError: <Lock ...
+    >>> from flufl.lock import NotLockedError
+    >>> try:
+    ...     lock.refresh()
+    ... except NotLockedError as error:
+    ...     print error
+    <Lock ...
 
 To refresh a lock, first acquire it with your best guess as to the length of
 time you'll need it.

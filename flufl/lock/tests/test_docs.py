@@ -33,8 +33,8 @@ import logging
 import tempfile
 import unittest
 
-from cStringIO import StringIO
 from datetime import timedelta
+from io import StringIO
 
 # pylint: disable-msg=F0401
 from pkg_resources import (
@@ -88,10 +88,10 @@ def setup(testobj):
     try:
         testobj.globs['absolute_import'] = absolute_import
         testobj.globs['unicode_literals'] = unicode_literals
-        testobj.globs['temporary_lockfile'] = make_temporary_lockfile(testobj)
-        testobj.globs['log_stream'] = log_stream
     except NameError:
         pass
+    testobj.globs['temporary_lockfile'] = make_temporary_lockfile(testobj)
+    testobj.globs['log_stream'] = log_stream
     testobj.globs['stop'] = stop
 
 
