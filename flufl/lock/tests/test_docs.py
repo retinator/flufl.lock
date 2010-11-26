@@ -33,6 +33,9 @@ import logging
 import tempfile
 import unittest
 
+from cStringIO import StringIO
+from datetime import timedelta
+
 # pylint: disable-msg=F0401
 from pkg_resources import (
     resource_filename, resource_exists, resource_listdir, cleanup_resources)
@@ -44,6 +47,9 @@ DOCTEST_FLAGS = (
     doctest.ELLIPSIS |
     doctest.NORMALIZE_WHITESPACE |
     doctest.REPORT_NDIFF)
+
+# For logging debugging.
+log_stream = StringIO()
 
 
 
@@ -68,8 +74,14 @@ def make_temporary_lockfile(testobj):
 
 def setup(testobj):
     """Test setup."""
-    # Initialize logging.
-    logging.basicConfig()
+    # Truncate the log.
+    log_stream.truncate()
+    # Note that the module has a default built-in *clock slop* of 10 seconds
+    # to handle differences in machine clocks. Since this test is happening on
+    # the same machine, we can bump the slop down to a more reasonable number.
+    from flufl.lock import _lockfile
+    testobj._slop = _lockfile.CLOCK_SLOP
+    testobj._slop = timedelta(seconds=0)
     # Make sure future statements in our doctests match the Python code.  When
     # run with 2to3, the future import gets removed and these names are not
     # defined.
@@ -77,6 +89,7 @@ def setup(testobj):
         testobj.globs['absolute_import'] = absolute_import
         testobj.globs['unicode_literals'] = unicode_literals
         testobj.globs['temporary_lockfile'] = make_temporary_lockfile(testobj)
+        testobj.globs['log_stream'] = log_stream
     except NameError:
         pass
     testobj.globs['stop'] = stop
@@ -84,6 +97,9 @@ def setup(testobj):
 
 def teardown(testobj):
     """Test teardown."""
+    # Restore the original clock slop.
+    from flufl.lock import _lockfile
+    _lockfile.CLOCK_SLOP = testobj._slop
     try:
         os.remove(testobj._lockfile)
     except OSError as error:
@@ -97,6 +113,12 @@ def teardown(testobj):
 
 def additional_tests():
     "Run the doc tests (README.txt and docs/*, if any exist)"
+    # Initialize logging for testing purposes.
+    logging.basicConfig(stream=log_stream,
+                        level=logging.DEBUG,
+                        datefmt='%b %d %H:%M:%S %Y',
+                        format='%(asctime)s (%(process)d) %(message)s',
+                        )
     doctest_files = [
         os.path.abspath(resource_filename('flufl.lock', 'README.txt'))]
     if resource_exists('flufl.lock', 'docs'):

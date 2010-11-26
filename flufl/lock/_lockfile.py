@@ -68,7 +68,18 @@ DEFAULT_LOCK_LIFETIME  = datetime.timedelta(seconds=15)
 # Allowable a bit of clock skew.
 CLOCK_SLOP = datetime.timedelta(seconds=10)
 
-log = logging.getLogger('flufl.locks')
+log = logging.getLogger('flufl.lock')
+
+# Install a null handler to avoid warnings when applications don't set their
+# own flufl.lock logger.  See http://docs.python.org/library/logging.html
+try:
+    from logging import NullHandler
+except ImportError:
+    # Python < 2.7.
+    class NullHandler(logging.Handler):
+        def emit(self, record):
+            pass
+logging.getLogger('flufl.lock').addHandler(NullHandler())
 
 
 

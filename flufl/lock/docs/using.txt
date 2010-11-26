@@ -47,10 +47,18 @@ not exist.
     >>> lock
     <Lock ... [unlocked: 0:00:15] pid=... at ...>
 
-Locks have a default lifetime.
+Locks have a default lifetime...
 
     >>> lock.lifetime
     datetime.timedelta(0, 15)
+
+...which you can change.
+
+    >>> from datetime import timedelta
+    >>> lock.lifetime = timedelta(seconds=30)
+    >>> lock.lifetime
+    datetime.timedelta(0, 30)
+    >>> lock.lifetime = timedelta(seconds=15)
 
 You can ask whether the lock is acquired or not.
 
@@ -100,7 +108,6 @@ has already acquired it), the lock call will block.
 ::
 
     >>> from flufl.lock.tests.subproc import acquire
-    >>> from datetime import timedelta
     >>> import time
     >>> t0 = time.time()
 
@@ -123,6 +130,36 @@ for a little longer.  You cannot refresh an unlocked lock.
     Traceback (most recent call last):
     ...
     NotLockedError: <Lock ...
+
+To refresh a lock, first acquire it with your best guess as to the length of
+time you'll need it.
+
+    >>> from datetime import datetime
+    >>> lock.lifetime = timedelta(seconds=2)
+    >>> lock.lock()
+    >>> lock.is_locked
+    True
+
+After the current lifetime expires, the lock is stolen from the parent process
+even if the parent never unlocks it.
+
+    >>> from flufl.lock.tests.subproc import waitfor
+    >>> t_broken = waitfor(filename, lock.lifetime)
+    >>> t_broken < 3
+    True
+    >>> lock.is_locked
+    False
+
+However, if the process holding the lock refreshes it, it will hold it can
+hold it for as long as it needs.
+
+    >>> lock.lock()
+    >>> lock.refresh(timedelta(seconds=5))
+    >>> t_broken = waitfor(filename, lock.lifetime)
+    >>> t_broken > 3
+    True
+    >>> lock.is_locked
+    False
 
 
 .. _`open(2)`: http://manpages.ubuntu.com/manpages/dapper/en/man2/open.2.html

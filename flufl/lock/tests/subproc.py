@@ -21,6 +21,7 @@ from __future__ import absolute_import, unicode_literals
 __metaclass__ = type
 __all__ = [
     'acquire',
+    'waitfor',
     ]
 
 
@@ -47,3 +48,21 @@ def acquire(filename, lifetime=None):
     proc.start()
     while not queue.get():
         time.sleep(0.1)
+
+
+def child_waitfor(filename, lifetime, queue):
+    t0 = time.time()
+    # Try to acquire the lock.
+    with Lock(filename, lifetime):
+        # Tell the parent how long it took to acquire the lock.
+        queue.put(time.time() - t0)
+
+
+def waitfor(filename, lifetime):
+    """Fire off a child that waits for a lock."""
+    queue = multiprocessing.Queue()
+    proc = multiprocessing.Process(target=child_waitfor,
+                                   args=(filename, lifetime, queue))
+    proc.start()
+    time = queue.get()
+    return time
