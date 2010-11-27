@@ -24,13 +24,14 @@ __all__ = [
     'Lock',
     'LockError',
     'NotLockedError',
+    'TimeOutError',
     '__version__',
     ]
 
 
-__version__ = '2.0'
+__version__ = '2.0.1'
 
 
 # Public API.
 from flufl.lock._lockfile import (
-    AlreadyLockedError, Lock, LockError, NotLockedError)
+    AlreadyLockedError, Lock, LockError, NotLockedError, TimeOutError)
