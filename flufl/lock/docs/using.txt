@@ -149,7 +149,7 @@ even if the parent never unlocks it.
 
     >>> from flufl.lock.tests.subproc import waitfor
     >>> t_broken = waitfor(filename, lock.lifetime)
-    >>> t_broken < 3
+    >>> t_broken < 5
     True
     >>> lock.is_locked
     False
