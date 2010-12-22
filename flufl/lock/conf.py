@@ -194,10 +194,16 @@ latex_documents = [
 # If false, no module index is generated.
 #latex_use_modindex = True
 
+import errno
 def index_html():
     cwd = os.getcwd()
     try:
         os.chdir('build/sphinx/html')
+        try:
+            os.unlink('index.html')
+        except OSError as error:
+            if error.errno != errno.ENOENT:
+                raise
         os.symlink('README.html', 'index.html')
         print 'index.html -> README.html'
     finally:
