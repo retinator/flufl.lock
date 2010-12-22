@@ -73,6 +73,10 @@ except AttributeError:
     # Python 3.
     MAXINT = sys.maxsize
 
+# Details separator; also used in calculating the claim file path.  Lock files
+# should not include this character.
+SEP = '|'
+
 
 log = logging.getLogger('flufl.lock')
 
@@ -125,9 +129,12 @@ class Lock:
         # the lock.  We need to watch out for two Lock objects in the same
         # process pointing to the same lock file.  Without this, if you lock
         # lf1 and do not lock lf2, lf2.locked() will still return True.
-        self._claimfile = '%s.%s.%d.%d' % (
-            self._lockfile, socket.getfqdn(), os.getpid(),
-            random.randint(0, MAXINT))
+        self._claimfile = SEP.join((
+            self._lockfile,
+            socket.getfqdn(),
+            str(os.getpid()),
+            str(random.randint(0, MAXINT)),
+            ))
         # For transferring ownership across a fork.
         self._owned = True
 
@@ -137,6 +144,22 @@ class Lock:
             self._lockfile,
             ('locked' if self.is_locked else 'unlocked'),
             self._lifetime, os.getpid(), id(self))
+
+    @property
+    def details(self):
+        """Details as read from the lock file.
+
+        :return: A 3-tuple of hostname, process id, file name.
+        :rtype: (str, int, str)
+        :raises NotLockedError: if the lock is not acquired.
+        """
+        if not self.is_locked:
+            raise NotLockedError('Details are unavailable')
+        with open(self._lockfile) as fp:
+            filename = fp.read().strip()
+        # Rearrange for signature.
+        lockfile, hostname, pid, random = filename.split(SEP)
+        return hostname, int(pid), lockfile
 
     @property
     def lifetime(self):

@@ -166,4 +166,31 @@ hold it for as long as it needs.
     False
 
 
+Lock details
+============
+
+Lock files are written with unique contents that can be queried for
+information about the host name the lock was acquired on, the id of the
+process that acquired the lock, and the path to the lock file.
+
+    >>> import os, socket
+    >>> lock.lock()
+    >>> hostname, pid, lockfile = lock.details
+    >>> hostname == socket.getfqdn()
+    True
+    >>> pid == os.getpid()
+    True
+    >>> lockfile == filename
+    True
+    >>> lock.unlock()
+
+However, if the lock is not acquired, the details are unavailable.
+
+    >>> try:
+    ...     lock.details
+    ... except NotLockedError as error:
+    ...     print error
+    Details are unavailable
+
+
 .. _`open(2)`: http://manpages.ubuntu.com/manpages/dapper/en/man2/open.2.html
