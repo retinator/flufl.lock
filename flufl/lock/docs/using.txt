@@ -184,8 +184,23 @@ process that acquired the lock, and the path to the lock file.
     True
     >>> lock.unlock()
 
-However, if the lock is not acquired, the details are unavailable.
+Even if another process has acquired the lock, the details can be queried.
 
+    >>> acquire(filename, timedelta(seconds=3))
+    >>> lock.is_locked
+    False
+    >>> hostname, pid, lockfile = lock.details
+    >>> hostname == socket.getfqdn()
+    True
+    >>> pid == os.getpid()
+    False
+    >>> lockfile == filename
+    True
+
+However, if no process has acquired the lock, the details are unavailable.
+
+    >>> lock.lock()
+    >>> lock.unlock()
     >>> try:
     ...     lock.details
     ... except NotLockedError as error:

@@ -153,12 +153,18 @@ class Lock:
         :rtype: (str, int, str)
         :raises NotLockedError: if the lock is not acquired.
         """
-        if not self.is_locked:
-            raise NotLockedError('Details are unavailable')
-        with open(self._lockfile) as fp:
-            filename = fp.read().strip()
+        try:
+            with open(self._lockfile) as fp:
+                filename = fp.read().strip()
+        except IOError as error:
+            if error.errno == errno.ENOENT:
+                raise NotLockedError('Details are unavailable')
+            raise
         # Rearrange for signature.
-        lockfile, hostname, pid, random = filename.split(SEP)
+        try:
+            lockfile, hostname, pid, random = filename.split(SEP)
+        except ValueError:
+            raise NotLockedError('Details are unavailable')
         return hostname, int(pid), lockfile
 
     @property

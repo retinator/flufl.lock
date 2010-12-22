@@ -4,18 +4,15 @@ NEWS for flufl.lock
 
 2.1 (2010-12-22)
 ================
- * Added lock.details
-
+ * Added lock.details.
 
 2.0.2 (2010-12-19)
 ==================
  * Small adjustment to doctest.
 
-
 2.0.1 (2010-11-27)
 ==================
  * Add missing exception to __all__.
-
 
 2.0 (2010-11-26)
 ================
