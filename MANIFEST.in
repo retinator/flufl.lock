@@ -1,4 +1,3 @@
 include *.py
 global-include *.txt
-include Makefile
-prune _build
+prune build

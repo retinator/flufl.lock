@@ -38,7 +38,7 @@ master_doc = 'README'
 
 # General information about the project.
 project = u'flufl.lock'
-copyright = u'2004-2010, Barry A. Warsaw'
+copyright = u'2004-2011, Barry A. Warsaw'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
