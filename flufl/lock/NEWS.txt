@@ -2,6 +2,11 @@
 NEWS for flufl.lock
 ===================
 
+2.1.1 (2011-08-20)
+==================
+ * Fixed TypeError in .lock() method due to race condition in _releasetime
+   property.  Found by Stephen A. Goss. (LP: #827052)
+
 2.1 (2010-12-22)
 ================
  * Added lock.details.

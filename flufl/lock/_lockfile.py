@@ -268,9 +268,11 @@ class Lock:
                 log.error('timed out')
                 raise TimeOutError('Could not acquire the lock')
             # Okay, we haven't timed out, but we didn't get the lock.  Let's
-            # find if the lock lifetime has expired.
-            if (self._releasetime != -1 and
-                datetime.datetime.now() > self._releasetime + CLOCK_SLOP):
+            # find if the lock lifetime has expired.  Cache the release time
+            # to avoid race conditions.  (LP: #827052)
+            release_time = self._releasetime
+            if (release_time != -1 and
+                datetime.datetime.now() > release_time + CLOCK_SLOP):
                 # Yes, so break the lock.
                 self._break()
                 log.error('lifetime has expired, breaking')
