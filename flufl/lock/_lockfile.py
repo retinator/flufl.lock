@@ -1,4 +1,4 @@
-# Copyright (C) 2007-2011 by Barry A. Warsaw
+# Copyright (C) 2007-2012 by Barry A. Warsaw
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public License
@@ -45,6 +45,8 @@ you'll end up trampling on existing process locks -- and possibly corrupting
 data.  In a distributed (NFS) environment, you also need to make sure that
 your clocks are properly synchronized.
 """
+
+from __future__ import absolute_import, print_function, unicode_literals
 
 __metaclass__ = type
 __all__ = [
@@ -192,7 +194,7 @@ class Lock:
             self._lifetime = lifetime
         # Do we have the lock?  As a side effect, this refreshes the lock!
         if not self.is_locked and not unconditionally:
-            raise NotLockedError('%s: %s' % (repr(self), self._read()))
+            raise NotLockedError('{0}: {1}'.format(repr(self), self._read()))
 
     def lock(self, timeout=None):
         """Acquire the lock.
@@ -217,7 +219,7 @@ class Lock:
         # very rare occurrence, only happens from cron, and has only(?) been
         # observed on Solaris 2.6.
         self._touch()
-        log.debug('laying claim: %s', self._lockfile)
+        log.debug('laying claim: {0}'.format(self._lockfile))
         # For quieting the logging output
         loopcount = -1
         while True:
@@ -228,7 +230,7 @@ class Lock:
                 # If we got here, we know we know we got the lock, and never
                 # had it before, so we're done.  Just touch it again for the
                 # fun of it.
-                log.debug('got the lock: %s', self._lockfile)
+                log.debug('got the lock: {0}'.format(self._lockfile))
                 self._touch()
                 break
             except OSError as error:
@@ -254,10 +256,11 @@ class Lock:
                 elif self._linkcount != 2:
                     # Somebody's messin' with us!  Log this, and try again
                     # later.  XXX should we raise an exception?
-                    log.error('unexpected linkcount: %d', self._linkcount)
+                    log.error('unexpected linkcount: {0:d}'.format(
+                        self._linkcount))
                 elif self._read() == self._claimfile:
                     # It was us that already had the link.
-                    log.debug('already locked: %s', self._lockfile)
+                    log.debug('already locked: {0}'.format(self._lockfile))
                     raise AlreadyLockedError('We already had the lock')
                 # otherwise, someone else has the lock
                 pass
@@ -280,7 +283,7 @@ class Lock:
             # and the expected lock lifetime hasn't expired yet either.  So
             # let's wait a while for the owner of the lock to give it up.
             elif not loopcount % 100:
-                log.debug('waiting for claim: %s', self._lockfile)
+                log.debug('waiting for claim: {0}'.format(self._lockfile))
             self._sleep()
 
     def unlock(self, unconditionally=False):
@@ -308,7 +311,7 @@ class Lock:
         except OSError as error:
             if error.errno != errno.ENOENT:
                 raise
-        log.debug('unlocked: %s', self._lockfile)
+        log.debug('unlocked: {0}'.format(self._lockfile))
 
     @property
     def is_locked(self):
@@ -334,11 +337,11 @@ class Lock:
 
     def finalize(self):
         """Unconditionally unlock the file."""
-        log.debug('finalize: %s', self._lockfile)
+        log.debug('finalize: {0}'.format(self._lockfile))
         self.unlock(unconditionally=True)
 
     def __del__(self):
-        log.debug('__del__: %s', self._lockfile)
+        log.debug('__del__: {0}'.format(self._lockfile))
         if self._owned:
             self.finalize()
 
@@ -371,7 +374,7 @@ class Lock:
         # Find out current claim's file name
         winner = self._read()
         # Now twiddle ours to the given pid.
-        self._claimfile = '%s.%s.%d' % (
+        self._claimfile = '{0}.{1}.{2:d}'.format(
             self._lockfile, socket.getfqdn(), pid)
         # Create a hard link from the global lock file to the claim file.
         # This actually does things in reverse order of normal operation
@@ -386,22 +389,23 @@ class Lock:
         os.unlink(winner)
         # And do some sanity checks
         assert self._linkcount == 2, (
-            'Unexpected link count: wanted 2, got %d' % self._linkcount)
+            'Unexpected link count: wanted 2, got {0:d}'.format(
+                self._linkcount))
         assert self.is_locked, 'Expected to be locked'
-        log.debug('transferred the lock: %s', self._lockfile)
+        log.debug('transferred the lock: {0}'.format(self._lockfile))
 
     def take_possession(self):
         """Take possession of a lock from another process.
 
         See `transfer_to()` for more information.
         """
-        self._claimfile = '%s.%s.%d' % (
+        self._claimfile = '{0}.{1}.{2:d}'.format(
             self._lockfile, socket.getfqdn(), os.getpid())
         # Wait until the linkcount is 2, indicating the parent has completed
         # the transfer.
         while self._linkcount != 2 or self._read() != self._claimfile:
             time.sleep(0.25)
-        log.debug('took possession of the lock: %s', self._lockfile)
+        log.debug('took possession of the lock: {0}'.format(self._lockfile))
 
     def disown(self):
         """Disown this lock.

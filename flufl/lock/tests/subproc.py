@@ -1,4 +1,4 @@
-# Copyright (C) 2004-2011 by Barry A. Warsaw
+# Copyright (C) 2004-2012 by Barry A. Warsaw
 #
 # This file is part of flufl.lock.
 #
@@ -16,7 +16,7 @@
 
 """A helper for setting up subprocess locks."""
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import absolute_import, print_function, unicode_literals
 
 __metaclass__ = type
 __all__ = [

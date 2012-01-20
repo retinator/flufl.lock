@@ -11,6 +11,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+from __future__ import print_function
 import sys, os
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -28,7 +29,7 @@ extensions = ['sphinx.ext.autodoc']
 templates_path = ['../../_templates']
 
 # The suffix of source filenames.
-source_suffix = '.txt'
+source_suffix = '.rst'
 
 # The encoding of source files.
 #source_encoding = 'utf-8'
@@ -38,7 +39,7 @@ master_doc = 'README'
 
 # General information about the project.
 project = u'flufl.lock'
-copyright = u'2004-2011, Barry A. Warsaw'
+copyright = u'2004-2012, Barry A. Warsaw'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -173,8 +174,8 @@ htmlhelp_basename = 'flufllockdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('README.txt', 'flufllock.tex', u'flufl.lock Documentation',
-   u'Barry A. Warsaw', 'manual'),
+  ('README.rst', 'flufllock.tex', 'flufl.lock Documentation',
+   'Barry A. Warsaw', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -205,7 +206,7 @@ def index_html():
             if error.errno != errno.ENOENT:
                 raise
         os.symlink('README.html', 'index.html')
-        print 'index.html -> README.html'
+        print('index.html -> README.html')
     finally:
         os.chdir(cwd)
 

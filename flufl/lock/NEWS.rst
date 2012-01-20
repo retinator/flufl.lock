@@ -2,6 +2,10 @@
 NEWS for flufl.lock
 ===================
 
+2.2 (2012-01-19)
+================
+ * Support Python 3 without the use of 2to3.
+
 2.1.1 (2011-08-20)
 ==================
  * Fixed TypeError in .lock() method due to race condition in _releasetime

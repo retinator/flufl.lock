@@ -1,4 +1,4 @@
-# Copyright (C) 2004-2011 by Barry A. Warsaw
+# Copyright (C) 2004-2012 by Barry A. Warsaw
 #
 # This file is part of flufl.lock.
 #
@@ -19,7 +19,7 @@ import distribute_setup
 distribute_setup.use_setuptools()
 
 from setup_helpers import (
-    description, find_doctests, get_version, long_description, require_python)
+    description, get_version, long_description, require_python)
 from setuptools import setup, find_packages
 
 
@@ -35,15 +35,12 @@ setup(
     include_package_data=True,
     maintainer='Barry Warsaw',
     maintainer_email='barry@python.org',
-    description=description('README.txt'),
+    description=description('README.rst'),
     long_description=long_description(
-        'flufl/lock/README.txt',
-        'flufl/lock/NEWS.txt'),
+        'flufl/lock/README.rst',
+        'flufl/lock/NEWS.rst'),
     license='LGPLv3',
     url='http://launchpad.net/flufl.lock',
     download_url='https://launchpad.net/flufl.lock/+download',
     test_suite='flufl.lock.tests',
-    # Auto-conversion to Python 3.
-    use_2to3=True,
-    convert_2to3_doctests=find_doctests(),
     )

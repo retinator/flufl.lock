@@ -53,7 +53,7 @@ your clocks are properly synchronized.
 Requirements
 ============
 
-``flufl.lock`` requires Python 2.6 or newer.
+``flufl.lock`` requires Python 2.6 or newer.  It is compatible with Python 3.2.
 
 
 Project details

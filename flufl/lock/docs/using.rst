@@ -86,7 +86,7 @@ process.
     >>> try:
     ...     lock.lock()
     ... except AlreadyLockedError as error:
-    ...     print error
+    ...     print(error)
     We already had the lock
 
     >>> lock.unlock()
@@ -132,7 +132,7 @@ for a little longer.  You cannot refresh an unlocked lock.
     >>> try:
     ...     lock.refresh()
     ... except NotLockedError as error:
-    ...     print error
+    ...     print(error)
     <Lock ...
 
 To refresh a lock, first acquire it with your best guess as to the length of
@@ -204,7 +204,7 @@ However, if no process has acquired the lock, the details are unavailable.
     >>> try:
     ...     lock.details
     ... except NotLockedError as error:
-    ...     print error
+    ...     print(error)
     Details are unavailable
 
 

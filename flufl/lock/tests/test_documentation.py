@@ -1,4 +1,4 @@
-# Copyright (C) 2004-2011 by Barry A. Warsaw
+# Copyright (C) 2004-2012 by Barry A. Warsaw
 #
 # This file is part of flufl.lock.
 #
@@ -17,7 +17,7 @@
 
 """Test harness for doctests."""
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import absolute_import, print_function, unicode_literals
 
 __metaclass__ = type
 __all__ = [
@@ -36,7 +36,6 @@ import unittest
 from datetime import timedelta
 from io import StringIO
 
-# pylint: disable-msg=F0401
 from pkg_resources import (
     resource_filename, resource_exists, resource_listdir, cleanup_resources)
 
@@ -81,12 +80,13 @@ def setup(testobj):
     # the same machine, we can bump the slop down to a more reasonable number.
     from flufl.lock import _lockfile
     testobj._slop = _lockfile.CLOCK_SLOP
-    testobj._slop = timedelta(seconds=0)
+    _lockfile.CLOCK_SLOP = timedelta(seconds=0)
     # Make sure future statements in our doctests match the Python code.  When
     # run with 2to3, the future import gets removed and these names are not
     # defined.
     try:
         testobj.globs['absolute_import'] = absolute_import
+        testobj.globs['print_function'] = print_function
         testobj.globs['unicode_literals'] = unicode_literals
     except NameError:
         pass
@@ -112,7 +112,7 @@ def teardown(testobj):
 
 
 def additional_tests():
-    "Run the doc tests (README.txt and docs/*, if any exist)"
+    "Run the doc tests (README.rst and docs/*, if any exist)"
     # Initialize logging for testing purposes.
     logging.basicConfig(stream=log_stream,
                         level=logging.DEBUG,
@@ -120,10 +120,10 @@ def additional_tests():
                         format='%(asctime)s (%(process)d) %(message)s',
                         )
     doctest_files = [
-        os.path.abspath(resource_filename('flufl.lock', 'README.txt'))]
+        os.path.abspath(resource_filename('flufl.lock', 'README.rst'))]
     if resource_exists('flufl.lock', 'docs'):
         for name in resource_listdir('flufl.lock', 'docs'):
-            if name.endswith('.txt'):
+            if name.endswith('.rst'):
                 doctest_files.append(
                     os.path.abspath(
                         resource_filename('flufl.lock', 'docs/%s' % name)))
