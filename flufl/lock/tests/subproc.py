@@ -20,8 +20,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 __metaclass__ = type
 __all__ = [
-    'acquire',
-    'waitfor',
+    '_acquire',
+    '_waitfor',
     ]
 
 
@@ -40,7 +40,7 @@ def child_locker(filename, lifetime, queue):
         time.sleep(lifetime.seconds - 1)
 
 
-def acquire(filename, lifetime=None):
+def _acquire(filename, lifetime=None):
     """Acquire the named lock file in a subprocess."""
     queue = multiprocessing.Queue()
     proc = multiprocessing.Process(target=child_locker,
@@ -58,7 +58,7 @@ def child_waitfor(filename, lifetime, queue):
         queue.put(time.time() - t0)
 
 
-def waitfor(filename, lifetime):
+def _waitfor(filename, lifetime):
     """Fire off a child that waits for a lock."""
     queue = multiprocessing.Queue()
     proc = multiprocessing.Process(target=child_waitfor,

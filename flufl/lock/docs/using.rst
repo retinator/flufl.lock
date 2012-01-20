@@ -106,14 +106,15 @@ Lock acquisition blocks
 =======================
 
 Trying to lock the file when the lock is unavailable (because another process
-has already acquired it), the lock call will block.
+has already acquired it), the lock call will block.  *Note:* the `_acquire()`
+function is not part of the public API.
 ::
 
-    >>> from flufl.lock.tests.subproc import acquire
+    >>> from flufl.lock.tests.subproc import _acquire
     >>> import time
     >>> t0 = time.time()
 
-    >>> acquire(filename, timedelta(seconds=5))
+    >>> _acquire(filename, timedelta(seconds=5))
     >>> lock.lock()
     >>> t1 = time.time()
     >>> lock.unlock()
@@ -145,10 +146,11 @@ time you'll need it.
     True
 
 After the current lifetime expires, the lock is stolen from the parent process
-even if the parent never unlocks it.
+even if the parent never unlocks it.  *Note:* the `_waitfor()` function is not
+part of the public API.
 
-    >>> from flufl.lock.tests.subproc import waitfor
-    >>> t_broken = waitfor(filename, lock.lifetime)
+    >>> from flufl.lock.tests.subproc import _waitfor
+    >>> t_broken = _waitfor(filename, lock.lifetime)
     >>> t_broken < 5
     True
     >>> lock.is_locked
@@ -159,7 +161,7 @@ hold it for as long as it needs.
 
     >>> lock.lock()
     >>> lock.refresh(timedelta(seconds=5))
-    >>> t_broken = waitfor(filename, lock.lifetime)
+    >>> t_broken = _waitfor(filename, lock.lifetime)
     >>> t_broken > 3
     True
     >>> lock.is_locked
@@ -186,7 +188,7 @@ process that acquired the lock, and the path to the lock file.
 
 Even if another process has acquired the lock, the details can be queried.
 
-    >>> acquire(filename, timedelta(seconds=3))
+    >>> _acquire(filename, timedelta(seconds=3))
     >>> lock.is_locked
     False
     >>> hostname, pid, lockfile = lock.details

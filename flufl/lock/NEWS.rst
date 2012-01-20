@@ -5,6 +5,8 @@ NEWS for flufl.lock
 2.2 (2012-01-19)
 ================
  * Support Python 3 without the use of 2to3.
+ * Make the documentation clear that the `flufl.test.subproc` functions are
+   not part of the public API.  (LP: #838338)
 
 2.1.1 (2011-08-20)
 ==================
