@@ -25,9 +25,16 @@ __all__ = [
 
 import os
 import errno
-import builtins
 import tempfile
 import unittest
+
+try:
+    # Python 3
+    import builtins
+except ImportError:
+    # Python 2
+    import __builtin__ as builtins
+
 
 from flufl.lock._lockfile import Lock, NotLockedError
 
