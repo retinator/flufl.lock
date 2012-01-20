@@ -127,18 +127,11 @@ class Lock:
             lifetime = DEFAULT_LOCK_LIFETIME
         self._lockfile = lockfile
         self._lifetime = lifetime
-        # Calculate a hard link file name that will be used to lay claim to
-        # the lock.  We need to watch out for two Lock objects in the same
-        # process pointing to the same lock file.  Without this, if you lock
-        # lf1 and do not lock lf2, lf2.locked() will still return True.
-        self._claimfile = SEP.join((
-            self._lockfile,
-            socket.getfqdn(),
-            str(os.getpid()),
-            str(random.randint(0, MAXINT)),
-            ))
+        self._set_claimfile()
         # For transferring ownership across a fork.
         self._owned = True
+        # For extending the set of NFS errnos that are retried in _read().
+        self._retry_errnos = []
 
     def __repr__(self):
         return '<%s %s [%s: %s] pid=%s at %#xx>' % (
@@ -164,7 +157,7 @@ class Lock:
             raise
         # Rearrange for signature.
         try:
-            lockfile, hostname, pid, random = filename.split(SEP)
+            lockfile, hostname, pid, random_ignored = filename.split(SEP)
         except ValueError:
             raise NotLockedError('Details are unavailable')
         return hostname, int(pid), lockfile
@@ -374,8 +367,7 @@ class Lock:
         # Find out current claim's file name
         winner = self._read()
         # Now twiddle ours to the given pid.
-        self._claimfile = '{0}.{1}.{2:d}'.format(
-            self._lockfile, socket.getfqdn(), pid)
+        self._set_claimfile(pid)
         # Create a hard link from the global lock file to the claim file.
         # This actually does things in reverse order of normal operation
         # because we know that lockfile exists, and claimfile better not!
@@ -399,8 +391,7 @@ class Lock:
 
         See `transfer_to()` for more information.
         """
-        self._claimfile = '{0}.{1}.{2:d}'.format(
-            self._lockfile, socket.getfqdn(), os.getpid())
+        self._set_claimfile()
         # Wait until the linkcount is 2, indicating the parent has completed
         # the transfer.
         while self._linkcount != 2 or self._read() != self._claimfile:
@@ -414,6 +405,21 @@ class Lock:
         """
         self._owned = False
 
+    def _set_claimfile(self, pid=None):
+        """Set the _claimfile private variable."""
+        if pid is None:
+            pid = os.getpid()
+        # Calculate a hard link file name that will be used to lay claim to
+        # the lock.  We need to watch out for two Lock objects in the same
+        # process pointing to the same lock file.  Without this, if you lock
+        # lf1 and do not lock lf2, lf2.locked() will still return True.
+        self._claimfile = SEP.join((
+            self._lockfile,
+            socket.getfqdn(),
+            str(pid),
+            str(random.randint(0, MAXINT)),
+            ))
+
     def _write(self):
         """Write our claim file's name to the claim file."""
         # Make sure it's group writable
@@ -423,19 +429,37 @@ class Lock:
         finally:
             fp.close()
 
+    @property
+    def retry_errnos(self):
+        """The set of errno values that cause a read retry."""
+        return self._retry_errnos[:]
+
+    @retry_errnos.setter
+    def retry_errnos(self, errnos):
+        self._retry_errnos = []
+        self._retry_errnos.extend(errnos)
+
+    @retry_errnos.deleter
+    def retry_errnos(self):
+        self._retry_errnos = []
+
     def _read(self):
         """Read the contents of our lock file.
 
         :return: The contents of the lock file or None if the lock file does
             not exist.
         """
-        try:
-            with open(self._lockfile) as fp:
-                return fp.read()
-        except EnvironmentError as error:
-            if error.errno != errno.ENOENT:
-                raise
-            return None
+        while True:
+            try:
+                with open(self._lockfile) as fp:
+                    return fp.read()
+            except EnvironmentError as error:
+                if error.errno in self._retry_errnos:
+                    self._sleep()
+                elif error.errno != errno.ENOENT:
+                    raise
+                else:
+                    return None
 
     def _touch(self, filename=None):
         """Touch the claim file into the future.

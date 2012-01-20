@@ -7,6 +7,14 @@ NEWS for flufl.lock
  * Support Python 3 without the use of 2to3.
  * Make the documentation clear that the `flufl.test.subproc` functions are
    not part of the public API.  (LP: #838338)
+ * Fix claim file format in `take_possession()`.  (LP: #872096)
+ * Provide a new API for dealing with possible additional unexpected errnos
+   while trying to read the lock file.  These can happen in some NFS
+   environments.  If you want to retry the read, set the lock file's
+   `retry_errnos` property to a sequence of errnos.  If one of those errnos
+   occurs, the read is unconditionally (and infinitely) retried.
+   `retry_errnos` is a property which must be set to a sequence; it has a
+   getter and a deleter too.  (LP: #882261)
 
 2.1.1 (2011-08-20)
 ==================
