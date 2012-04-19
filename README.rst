@@ -1,24 +1,8 @@
-NFS-safe file locking with timeouts for POSIX systems
-
-..
-    This file is part of flufl.lock.
-
-    flufl.lock is free software: you can redistribute it and/or modify it
-    under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation, version 3 of the License.
-
-    flufl.lock is distributed in the hope that it will be useful, but
-    WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-    or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
-    License for more details.
-
-    You should have received a copy of the GNU Lesser General Public License
-    along with flufl.lock.  If not, see <http://www.gnu.org/licenses/>.
-
-
 ==========
 flufl.lock
 ==========
+
+NFS-safe file locking with timeouts for POSIX systems
 
 The ``flufl.lock`` library provides an NFS-safe file-based locking algorithm
 influenced by the GNU/Linux `open(2)` manpage, under the description of the
@@ -50,26 +34,19 @@ data.  In a distributed (NFS) environment, you also need to make sure that
 your clocks are properly synchronized.
 
 
-Requirements
-============
+License
+=======
 
-``flufl.lock`` requires Python 2.6 or newer.  It is compatible with Python 3.2.
+This file is part of flufl.lock.
 
+flufl.lock is free software: you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, version 3 of the License.
 
-Project details
-===============
+flufl.lock is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+License for more details.
 
-You may download the latest version of the package from the Python
-`Cheese Shop`_ or from Launchpad_.
-
-You can also install it via ``easy_install`` or ``pip``.
-
-    % sudo easy_install flufl.lock
-    % sudo pip install flufl.lock
-
-See the Launchpad project page for access to the Bazaar branch, bug report,
-etc.
-
-
-.. _`Cheese Shop`: http://pypi.python.org/flufl.lock
-.. _Launchpad: https://launchpad.net/flufl.lock
+You should have received a copy of the GNU Lesser General Public License
+along with flufl.lock.  If not, see <http://www.gnu.org/licenses/>.

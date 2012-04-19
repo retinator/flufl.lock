@@ -36,11 +36,23 @@ setup(
     maintainer='Barry Warsaw',
     maintainer_email='barry@python.org',
     description=description('README.rst'),
-    long_description=long_description(
-        'flufl/lock/README.rst',
-        'flufl/lock/NEWS.rst'),
+    long_description=long_description('README.rst', 'flufl/lock/NEWS.rst'),
     license='LGPLv3',
     url='http://launchpad.net/flufl.lock',
     download_url='https://launchpad.net/flufl.lock/+download',
     test_suite='flufl.lock.tests',
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: '
+            'GNU Lesser General Public License v3 or later (LGPLv3+)',
+        'Operating System :: POSIX',
+        'Operating System :: MacOS :: MacOS X',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Topic :: Software Development :: Libraries',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        ]
     )
