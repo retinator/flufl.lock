@@ -90,7 +90,7 @@ class ErrnoRetryTests(unittest.TestCase):
     def test_retry_errno_api(self):
         self.assertEqual(self._lock.retry_errnos, [])
         self._lock.retry_errnos = [EMOCKEDFAILURE, EOTHERMOCKEDFAILURE]
-        self.assertEqual(self._lock.retry_errnos, 
+        self.assertEqual(self._lock.retry_errnos,
                          [EMOCKEDFAILURE, EOTHERMOCKEDFAILURE])
         del self._lock.retry_errnos
         self.assertEqual(self._lock.retry_errnos, [])
@@ -99,7 +99,7 @@ class ErrnoRetryTests(unittest.TestCase):
         # Test that _read() will retry when a given errno is encountered.
         self._lock.lock()
         self._lock.retry_errnos = [self._errno]
-        self._enable()        
+        self._enable()
         self.assertTrue(self._lock.is_locked)
         # The _read() trigged by the .is_locked call should have been retried.
         self.assertEqual(self._retry_count, 3)

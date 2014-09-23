@@ -37,21 +37,18 @@ You can download the latest version of the package either from the Cheeseshop:
 
     http://pypi.python.org/pypi/flufl.lock
 
-or from the Launchpad page above.  Of course you can also just install it with
-``pip`` or ``easy_install`` from the command line::
+Of course you can also just install it with ``pip``::
 
     % sudo pip install flufl.lock
-    % sudo easy_install flufl.lock
 
 You may want to use `virtualenv`_ instead of installing the package into the
 system Python.
 
-You can grab the latest development copy of the code using Bazaar, from the
-Launchpad home page above.  See http://bazaar-vcs.org for details on the
-Bazaar distributed revision control system.  If you have Bazaar installed, you
-can grab your own branch of the code like this::
+You can grab the latest development copy of the code using git.  The master
+repository is hosted on Gitorious.  If you have git installed, you can grab
+your own branch of the code like this::
 
-     bzr branch lp:flufl.lock
+    $ git clone git://gitorious.org/flufl-lock/flufl-lock.git
 
 You may contact the author via barry@python.org.
 
@@ -59,7 +56,7 @@ You may contact the author via barry@python.org.
 Copyright
 =========
 
-Copyright (C) 2004-2012 Barry A. Warsaw
+Copyright (C) 2004-2014 Barry A. Warsaw
 
 This file is part of flufl.lock.
 

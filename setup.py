@@ -36,8 +36,7 @@ setup(
     long_description=long_description('README.rst', 'flufl/lock/NEWS.rst'),
     license='LGPLv3',
     url='http://launchpad.net/flufl.lock',
-    download_url='https://launchpad.net/flufl.lock/+download',
-    test_suite='flufl.lock.tests',
+    download_url='https://pypi.python.org/pypi/flufl.lock',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
