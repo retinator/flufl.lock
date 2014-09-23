@@ -4,9 +4,10 @@ NEWS for flufl.lock
 
 2.3 (2014-XX-XX)
 ================
- * Fix documentation bug.  LP: #1026403
+ * Fix documentation bug.  (LP: #1026403)
  * Catch ESTALE along with ENOENT, as NFS servers are supposed to (but don't
-   always) throw ESTALE instead of ENOENT.
+   always) throw ESTALE instead of ENOENT.  (LP: #977999)
+ * Purge all references to `distribute`.  (LP: #1263794)
 
 
 2.2.1 (2012-04-19)
