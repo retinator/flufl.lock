@@ -1,4 +1,4 @@
-# Copyright (C) 2004-2012 by Barry A. Warsaw
+# Copyright (C) 2004-2014 by Barry A. Warsaw
 #
 # This file is part of flufl.lock
 #
@@ -29,7 +29,7 @@ __all__ = [
     ]
 
 
-__version__ = '2.2.1'
+__version__ = '2.3'
 
 
 # Public API.

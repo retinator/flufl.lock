@@ -1,4 +1,4 @@
-# Copyright (C) 2007-2012 by Barry A. Warsaw
+# Copyright (C) 2007-2014 by Barry A. Warsaw
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public License
@@ -79,6 +79,10 @@ except AttributeError:
 # should not include this character.
 SEP = '|'
 
+# LP: #977999 - catch both ENOENT and ESTALE.  The latter is what an NFS
+# server should return, but some Linux versions return ENOENT.
+ERRORS = (errno.ENOENT, errno.ESTALE)
+
 
 log = logging.getLogger('flufl.lock')
 
@@ -152,7 +156,7 @@ class Lock:
             with open(self._lockfile) as fp:
                 filename = fp.read().strip()
         except IOError as error:
-            if error.errno == errno.ENOENT:
+            if error.errno in ERRORS:
                 raise NotLockedError('Details are unavailable')
             raise
         # Rearrange for signature.
@@ -230,7 +234,7 @@ class Lock:
                 # The link failed for some reason, possibly because someone
                 # else already has the lock (i.e. we got an EEXIST), or for
                 # some other bizarre reason.
-                if error.errno == errno.ENOENT:
+                if error.errno in ERRORS:
                     # XXX in some Linux environments, it is possible to get an
                     # ENOENT, which is truly strange, because this means that
                     # self._claimfile didn't exist at the time of the
@@ -296,13 +300,13 @@ class Lock:
             try:
                 os.unlink(self._lockfile)
             except OSError as error:
-                if error.errno != errno.ENOENT:
+                if error.errno not in ERRORS:
                     raise
         # Remove our claim file.
         try:
             os.unlink(self._claimfile)
         except OSError as error:
-            if error.errno != errno.ENOENT:
+            if error.errno not in ERRORS:
                 raise
         log.debug('unlocked: {0}'.format(self._lockfile))
 
@@ -456,7 +460,7 @@ class Lock:
             except EnvironmentError as error:
                 if error.errno in self._retry_errnos:
                     self._sleep()
-                elif error.errno != errno.ENOENT:
+                elif error.errno not in ERRORS:
                     raise
                 else:
                     return None
@@ -473,7 +477,7 @@ class Lock:
             # XXX We probably don't need to modify atime, but this is easier.
             os.utime(filename or self._claimfile, (t, t))
         except OSError as error:
-            if error.errno != errno.ENOENT:
+            if error.errno not in ERRORS:
                 raise
 
     @property
@@ -487,7 +491,7 @@ class Lock:
             return datetime.datetime.fromtimestamp(
                 os.stat(self._lockfile).st_mtime)
         except OSError as error:
-            if error.errno == errno.ENOENT:
+            if error.errno in ERRORS:
                 return -1
             raise
 
@@ -501,7 +505,7 @@ class Lock:
         try:
             return os.stat(self._lockfile).st_nlink
         except OSError as error:
-            if error.errno == errno.ENOENT:
+            if error.errno in ERRORS:
                 return -1
             raise
 
@@ -528,7 +532,7 @@ class Lock:
         try:
             os.unlink(self._lockfile)
         except OSError as error:
-            if error.errno != errno.ENOENT:
+            if error.errno not in ERRORS:
                 raise
         # Try to remove the old winner's claim file, since we're assuming the
         # winner process has hung or died.  Don't worry too much if we can't
@@ -538,7 +542,7 @@ class Lock:
             if winner:
                 os.unlink(winner)
         except OSError as error:
-            if error.errno != errno.ENOENT:
+            if error.errno not in ERRORS:
                 raise
 
     def _sleep(self):

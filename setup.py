@@ -1,4 +1,4 @@
-# Copyright (C) 2004-2012 by Barry A. Warsaw
+# Copyright (C) 2004-2014 by Barry A. Warsaw
 #
 # This file is part of flufl.lock.
 #
@@ -14,9 +14,6 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with flufl.lock.  If not, see <http://www.gnu.org/licenses/>.
-
-import distribute_setup
-distribute_setup.use_setuptools()
 
 from setup_helpers import (
     description, get_version, long_description, require_python)
