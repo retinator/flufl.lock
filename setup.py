@@ -37,6 +37,7 @@ setup(
     license='LGPLv3',
     url='http://launchpad.net/flufl.lock',
     download_url='https://pypi.python.org/pypi/flufl.lock',
+    test_suite='flufl.lock.tests',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
