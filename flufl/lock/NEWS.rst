@@ -2,7 +2,7 @@
 NEWS for flufl.lock
 ===================
 
-2.3 (2014-XX-XX)
+2.3 (2014-09-25)
 ================
  * Fix documentation bug.  (LP: #1026403)
  * Catch ESTALE along with ENOENT, as NFS servers are supposed to (but don't
