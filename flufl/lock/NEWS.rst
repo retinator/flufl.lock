@@ -2,6 +2,11 @@
 NEWS for flufl.lock
 ===================
 
+2.3.1 (2014-09-26)
+==================
+ * Include MANIFEST.in in the sdist tarball, otherwise the Debian package
+   won't built correctly.
+
 2.3 (2014-09-25)
 ================
  * Fix documentation bug.  (LP: #1026403)
@@ -9,14 +14,12 @@ NEWS for flufl.lock
    always) throw ESTALE instead of ENOENT.  (LP: #977999)
  * Purge all references to `distribute`.  (LP: #1263794)
 
-
 2.2.1 (2012-04-19)
 ==================
  * Add classifiers to setup.py and make the long description more compatible
    with the Cheeseshop.
  * Other changes to make the Cheeseshop page look nicer.  (LP: #680136)
  * setup_helper.py version 2.1.
-
 
 2.2 (2012-01-19)
 ================
@@ -32,32 +35,26 @@ NEWS for flufl.lock
    `retry_errnos` is a property which must be set to a sequence; it has a
    getter and a deleter too.  (LP: #882261)
 
-
 2.1.1 (2011-08-20)
 ==================
  * Fixed TypeError in .lock() method due to race condition in _releasetime
    property.  Found by Stephen A. Goss. (LP: #827052)
 
-
 2.1 (2010-12-22)
 ================
  * Added lock.details.
-
 
 2.0.2 (2010-12-19)
 ==================
  * Small adjustment to doctest.
 
-
 2.0.1 (2010-11-27)
 ==================
  * Add missing exception to __all__.
 
-
 2.0 (2010-11-26)
 ================
  * Package renamed to flufl.lock.
-
 
 Earlier
 =======

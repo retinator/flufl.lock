@@ -1,4 +1,4 @@
-include *.py
+include *.py MANIFEST.in
 global-include *.txt *.rst
-exclude MANIFEST.in .gitignore
+exclude .gitignore
 prune build
