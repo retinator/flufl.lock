@@ -46,7 +46,7 @@ or later.  See the COPYING.LESSER file for details.
 Project
 =======
 
- * Project home: https://gitlab.com/warsaw/flufl-lock
- * Report bugs at: https://gitlab.com/warsaw/flufl-lock/issues
- * Code hosting: git@gitlab.com:warsaw/flufl-lock.git
+ * Project home: https://gitlab.com/warsaw/flufl.lock
+ * Report bugs at: https://gitlab.com/warsaw/flufl.lock/issues
+ * Code hosting: git@gitlab.com:warsaw/flufl.lock.git
  * Documentation: http://pythonhosted.org/flufl.lock/

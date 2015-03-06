@@ -25,9 +25,9 @@ at:
 Project details
 ===============
 
- * Project home: https://gitlab.com/warsaw/flufl-lock
- * Report bugs at: https://gitlab.com/warsaw/flufl-lock/issues
- * Code hosting: git@gitlab.com:warsaw/flufl-lock.git
+ * Project home: https://gitlab.com/warsaw/flufl.lock
+ * Report bugs at: https://gitlab.com/warsaw/flufl.lock/issues
+ * Code hosting: git@gitlab.com:warsaw/flufl.lock.git
  * Documentation: http://pythonhosted.org/flufl.lock/
  * PyPI: http://pypi.python.org/pypi/flufl.lock
 
@@ -39,7 +39,7 @@ You can grab the latest development copy of the code using git.  The master
 repository is hosted on GitLab.  If you have git installed, you can grab
 your own branch of the code like this::
 
-    $ git clone git@gitlab.com:warsaw/flufl-lock.git
+    $ git clone git@gitlab.com:warsaw/flufl.lock.git
 
 You may contact the author via barry@python.org.
 
