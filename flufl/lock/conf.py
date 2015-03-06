@@ -39,7 +39,7 @@ master_doc = 'README'
 
 # General information about the project.
 project = 'flufl.lock'
-copyright = '2004-2014, Barry A. Warsaw'
+copyright = '2004-2015, Barry A. Warsaw'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

@@ -1,13 +1,13 @@
-# Copyright (C) 2009-2014 by Barry A. Warsaw
+# Copyright (C) 2009-2015 Barry A. Warsaw
 #
 # This file is part of flufl.lock
 #
-# flufl.lock is free software: you can redistribute it and/or modify it under
-# the terms of the GNU Lesser General Public License as published by the Free
-# Software Foundation, version 3 of the License.
+# flufl.lock is free software: you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by the
+# Free Software Foundation, version 3 of the License.
 #
-# flufl.lock is distributed in the hope that it will be useful, but WITHOUT
-# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# flufl.lock is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 # FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
 # for more details.
 #
@@ -34,13 +34,13 @@ import re
 import sys
 
 
-DEFAULT_VERSION_RE = re.compile(r'(?P<version>\d+\.\d+(?:\.\d+)?)')
+DEFAULT_VERSION_RE = re.compile(
+    r'(?P<version>\d+\.\d+(?:\.\d+)?(?:(?:a|b|rc)\d+))')
 EMPTYSTRING = ''
 
-__version__ = '2.1'
+__version__ = '2.2'
 
 
-
 def require_python(minimum):
     """Require at least a minimum Python version.
 
@@ -70,7 +70,6 @@ def require_python(minimum):
         sys.exit(1)
 
 
-
 def get_version(filename, pattern=None):
     """Extract the __version__ from a file without importing it.
 
@@ -104,7 +103,6 @@ def get_version(filename, pattern=None):
     raise AssertionError('No __version__ assignment found')
 
 
-
 def find_doctests(start='.', extension='.rst'):
     """Find separate-file doctests in the package.
 
@@ -127,7 +125,6 @@ def find_doctests(start='.', extension='.rst'):
     return doctests
 
 
-
 def long_description(*filenames):
     """Provide a long description."""
     res = ['']

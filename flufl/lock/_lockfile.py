@@ -1,4 +1,4 @@
-# Copyright (C) 2007-2014 by Barry A. Warsaw
+# Copyright (C) 2007-2015 Barry A. Warsaw
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public License
@@ -20,14 +20,14 @@
 This code implements an NFS-safe file-based locking algorithm influenced by
 the GNU/Linux open(2) manpage, under the description of the O_EXCL option:
 
-        [...] O_EXCL is broken on NFS file systems, programs which rely on it
-        for performing locking tasks will contain a race condition.  The
-        solution for performing atomic file locking using a lockfile is to
-        create a unique file on the same fs (e.g., incorporating hostname and
-        pid), use link(2) to make a link to the lockfile.  If link() returns
-        0, the lock is successful.  Otherwise, use stat(2) on the unique file
-        to check if its link count has increased to 2, in which case the lock
-        is also successful.
+    [...] O_EXCL is broken on NFS file systems, programs which rely on it
+    for performing locking tasks will contain a race condition.  The
+    solution for performing atomic file locking using a lockfile is to
+    create a unique file on the same fs (e.g., incorporating hostname and
+    pid), use link(2) to make a link to the lockfile.  If link() returns
+    0, the lock is successful.  Otherwise, use stat(2) on the unique file
+    to check if its link count has increased to 2, in which case the lock
+    is also successful.
 
 The assumption made here is that there will be no 'outside interference',
 e.g. no agent external to this code will ever link() to the specific lock
@@ -98,7 +98,6 @@ except ImportError:
 logging.getLogger('flufl.lock').addHandler(NullHandler())
 
 
-
 # Exceptions that can be raised by this module
 class LockError(Exception):
     """Base class for all exceptions in this module."""
@@ -113,7 +112,6 @@ class TimeOutError(LockError):
     """The timeout interval elapsed before the lock succeeded."""
 
 
-
 class Lock:
     """A portable way to lock resources by way of the file system."""
     def __init__(self, lockfile, lifetime=None):

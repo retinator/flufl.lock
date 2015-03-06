@@ -1,4 +1,4 @@
-# Copyright (C) 2004-2014 by Barry A. Warsaw
+# Copyright (C) 2004-2015 Barry A. Warsaw
 #
 # This file is part of flufl.lock.
 #
@@ -39,7 +39,6 @@ except ImportError:
 from flufl.lock._lockfile import Lock, NotLockedError
 
 
-
 class TestableEnvironmentError(EnvironmentError):
     def __init__(self, errno):
         super(TestableEnvironmentError, self).__init__()
@@ -49,7 +48,6 @@ EMOCKEDFAILURE = 99
 EOTHERMOCKEDFAILURE = 98
 
 
-
 class ErrnoRetryTests(unittest.TestCase):
     def setUp(self):
         self._builtin_open = builtins.open

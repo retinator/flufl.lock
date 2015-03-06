@@ -1,4 +1,4 @@
-# Copyright (C) 2004-2014 by Barry A. Warsaw
+# Copyright (C) 2004-2015 Barry A. Warsaw
 #
 # This file is part of flufl.lock.
 #
@@ -51,7 +51,6 @@ DOCTEST_FLAGS = (
 log_stream = StringIO()
 
 
-
 def stop():
     """Call into pdb.set_trace()"""
     # Do the import here so that you get the wacky special hacked pdb instead
@@ -60,7 +59,6 @@ def stop():
     pdb.set_trace()
 
 
-
 def make_temporary_lockfile(testobj):
     """Make a temporary lock file for the tests."""
     def lockfile_creator():
@@ -110,7 +108,6 @@ def teardown(testobj):
         pass
 
 
-
 def additional_tests():
     "Run the doc tests (README.rst and docs/*, if any exist)"
     # Initialize logging for testing purposes.

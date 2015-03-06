@@ -2,6 +2,9 @@
 NEWS for flufl.lock
 ===================
 
+2.4 (20XX-XX-XX)
+================
+
 2.3.1 (2014-09-26)
 ==================
  * Include MANIFEST.in in the sdist tarball, otherwise the Debian package

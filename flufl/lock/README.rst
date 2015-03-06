@@ -19,36 +19,27 @@ A `simple guide`_ to using the library is available within this package, in
 the form of doctests.   The manual is also available online in the Cheeseshop
 at:
 
-    http://package.python.org/flufl.lock
+    http://pythonhosted.org/flufl.lock/
 
 
 Project details
 ===============
 
-The project home page is:
-
-    http://launchpad.net/flufl.lock
-
-You should report bugs at:
-
-    http://bugs.launchpad.net/flufl.lock
-
-You can download the latest version of the package either from the Cheeseshop:
-
-    http://pypi.python.org/pypi/flufl.lock
+ * Project home: https://gitlab.com/warsaw/flufl-lock
+ * Report bugs at: https://gitlab.com/warsaw/flufl-lock/issues
+ * Code hosting: git@gitlab.com:warsaw/flufl-lock.git
+ * Documentation: http://pythonhosted.org/flufl.lock/
+ * PyPI: http://pypi.python.org/pypi/flufl.lock
 
 Of course you can also just install it with ``pip``::
 
-    % sudo pip install flufl.lock
-
-You may want to use `virtualenv`_ instead of installing the package into the
-system Python.
+    % pip install flufl.lock
 
 You can grab the latest development copy of the code using git.  The master
 repository is hosted on Gitorious.  If you have git installed, you can grab
 your own branch of the code like this::
 
-    $ git clone git://gitorious.org/flufl-lock/flufl-lock.git
+    $ git clone git@gitlab.com:warsaw/flufl-lock.git
 
 You may contact the author via barry@python.org.
 
@@ -56,7 +47,7 @@ You may contact the author via barry@python.org.
 Copyright
 =========
 
-Copyright (C) 2004-2014 Barry A. Warsaw
+Copyright (C) 2004-2015 Barry A. Warsaw
 
 This file is part of flufl.lock.
 
