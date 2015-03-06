@@ -36,7 +36,7 @@ Of course you can also just install it with ``pip``::
     % pip install flufl.lock
 
 You can grab the latest development copy of the code using git.  The master
-repository is hosted on Gitorious.  If you have git installed, you can grab
+repository is hosted on GitLab.  If you have git installed, you can grab
 your own branch of the code like this::
 
     $ git clone git@gitlab.com:warsaw/flufl-lock.git
