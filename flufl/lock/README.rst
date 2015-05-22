@@ -16,10 +16,7 @@ Documentation
 =============
 
 A `simple guide`_ to using the library is available within this package, in
-the form of doctests.   The manual is also available online in the Cheeseshop
-at:
-
-    http://pythonhosted.org/flufl.lock/
+the form of doctests.
 
 
 Project details
@@ -28,10 +25,9 @@ Project details
  * Project home: https://gitlab.com/warsaw/flufl.lock
  * Report bugs at: https://gitlab.com/warsaw/flufl.lock/issues
  * Code hosting: git@gitlab.com:warsaw/flufl.lock.git
- * Documentation: http://pythonhosted.org/flufl.lock/
- * PyPI: http://pypi.python.org/pypi/flufl.lock
+ * Documentation: http://flufllock.readthedocs.org/
 
-Of course you can also just install it with ``pip``::
+You can install it with ``pip``::
 
     % pip install flufl.lock
 

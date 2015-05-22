@@ -43,8 +43,8 @@ Licensed under the terms of the GNU Lesser General Public License, version 3
 or later.  See the COPYING.LESSER file for details.
 
 
-Project
-=======
+Project details
+===============
 
  * Project home: https://gitlab.com/warsaw/flufl.lock
  * Report bugs at: https://gitlab.com/warsaw/flufl.lock/issues
