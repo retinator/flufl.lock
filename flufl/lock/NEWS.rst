@@ -2,8 +2,10 @@
 NEWS for flufl.lock
 ===================
 
-2.4 (20XX-XX-XX)
+2.4 (2015-10-10)
 ================
+ * Drop Python 2.6 compatibility.
+ * Add Python 3.5 compatibility.
 
 2.3.1 (2014-09-26)
 ==================

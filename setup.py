@@ -20,7 +20,7 @@ from setup_helpers import (
 from setuptools import setup, find_packages
 
 
-require_python(0x20600f0)
+require_python(0x20700f0)
 __version__ = get_version('flufl/lock/__init__.py')
 
 
