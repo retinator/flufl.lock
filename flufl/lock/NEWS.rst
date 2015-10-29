@@ -2,6 +2,10 @@
 NEWS for flufl.lock
 ===================
 
+2.4.1 (2015-10-29)
+==================
+ * Fix the MANIFEST.in so that tox.ini is included in the sdist.
+
 2.4 (2015-10-10)
 ================
  * Drop Python 2.6 compatibility.
