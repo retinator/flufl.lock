@@ -24,8 +24,10 @@ __all__ = [
 
 
 import os
+import datetime
 import errno
 import tempfile
+import time
 import unittest
 
 try:
@@ -36,7 +38,8 @@ except ImportError:
     import __builtin__ as builtins
 
 
-from flufl.lock._lockfile import Lock, NotLockedError
+import flufl.lock._lockfile
+from flufl.lock._lockfile import Lock, NotLockedError, TimeOutError
 
 
 class TestableEnvironmentError(EnvironmentError):
@@ -101,3 +104,42 @@ class ErrnoRetryTests(unittest.TestCase):
         self.assertTrue(self._lock.is_locked)
         # The _read() trigged by the .is_locked call should have been retried.
         self.assertEqual(self._retry_count, 3)
+
+
+class LifetimeTests(unittest.TestCase):
+    def setUp(self):
+        self._saved_CLOCK_SLOP = flufl.lock._lockfile.CLOCK_SLOP
+        flufl.lock._lockfile.CLOCK_SLOP = datetime.timedelta(seconds=0)
+        fd, self._lockfile = tempfile.mkstemp('.lck')
+        os.close(fd)
+        self._lifetime = datetime.timedelta(seconds=1)
+        self._lock1 = Lock(self._lockfile, lifetime=self._lifetime)
+        self._lock2 = Lock(self._lockfile, lifetime=self._lifetime)
+
+    def tearDown(self):
+        flufl.lock._lockfile.CLOCK_SLOP = self._saved_CLOCK_SLOP
+        try:
+            self._lock1.unlock()
+        except NotLockedError:
+            pass
+        try:
+            self._lock2.unlock()
+        except NotLockedError:
+            pass
+        try:
+            os.remove(self._lockfile)
+        except OSError as error:
+            if error.errno != errno.ENOENT:
+                raise
+
+    def test_no_break(self):
+        self._lock1.lock()
+        with self.assertRaises(TimeOutError):
+            self._lock2.lock(timeout=datetime.timedelta(seconds=0))
+
+    def test_break(self):
+        self._lock1.lock()
+        time.sleep(self._lifetime.seconds)
+        self._lock2.lock(timeout=datetime.timedelta(seconds=0))
+        self.assertTrue(self._lock2.is_locked)
+        self.assertFalse(self._lock1.is_locked)

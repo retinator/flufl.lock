@@ -260,23 +260,23 @@ class Lock:
                 # otherwise, someone else has the lock
                 pass
             # We did not acquire the lock, because someone else already has
-            # it.  Have we timed out in our quest for the lock?
-            if timeout is not None and timeout_time < datetime.datetime.now():
-                os.unlink(self._claimfile)
-                log.error('timed out')
-                raise TimeOutError('Could not acquire the lock')
-            # Okay, we haven't timed out, but we didn't get the lock.  Let's
-            # find if the lock lifetime has expired.  Cache the release time
-            # to avoid race conditions.  (LP: #827052)
+            # it.  Let's find if the lock lifetime has expired.  Cache the
+            # release time to avoid race conditions.  (LP: #827052)
             release_time = self._releasetime
             if (release_time != -1 and
                 datetime.datetime.now() > release_time + CLOCK_SLOP):
                 # Yes, so break the lock.
                 self._break()
                 log.error('lifetime has expired, breaking')
-            # Okay, someone else has the lock, our claim hasn't timed out yet,
-            # and the expected lock lifetime hasn't expired yet either.  So
-            # let's wait a while for the owner of the lock to give it up.
+            # Someone else has the lock and the lock lifetime has not expired.
+            # Have we timed out in our quest for the lock?
+            elif timeout is not None and timeout_time < datetime.datetime.now():
+                os.unlink(self._claimfile)
+                log.error('timed out')
+                raise TimeOutError('Could not acquire the lock')
+            # Okay, someone else has the lock, the expected lock lifetime
+            # hasn't expired yet, and our claim hasn't timed out yet either.
+            # So let's wait a while for the owner of the lock to give it up.
             elif not loopcount % 100:
                 log.debug('waiting for claim: {0}'.format(self._lockfile))
             self._sleep()
