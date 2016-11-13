@@ -259,18 +259,20 @@ class Lock:
                     raise AlreadyLockedError('We already had the lock')
                 # otherwise, someone else has the lock
                 pass
+            timed_out = timeout is not None and timeout_time < datetime.datetime.now()
             # We did not acquire the lock, because someone else already has
             # it.  Let's find if the lock lifetime has expired.  Cache the
             # release time to avoid race conditions.  (LP: #827052)
             release_time = self._releasetime
-            if (release_time != -1 and
+            if (not (loopcount and timed_out) and
+                release_time != -1 and
                 datetime.datetime.now() > release_time + CLOCK_SLOP):
                 # Yes, so break the lock.
                 self._break()
                 log.error('lifetime has expired, breaking')
             # Someone else has the lock and the lock lifetime has not expired.
             # Have we timed out in our quest for the lock?
-            elif timeout is not None and timeout_time < datetime.datetime.now():
+            elif timed_out:
                 os.unlink(self._claimfile)
                 log.error('timed out')
                 raise TimeOutError('Could not acquire the lock')
